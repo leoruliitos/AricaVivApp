@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TextInput, Button, Alert} from 'react-native';
 
-//importar ficheros
+//importar firebase
 import appFirebase from '../credenciales'
 import {getFirestore, collection, addDoc, getDocs, doc, deleteDoc, getDoc, setDoct} from 'firebase/firestore'
 
