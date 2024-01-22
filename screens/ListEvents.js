@@ -37,7 +37,7 @@ export default function ListEvents(props) {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container}>
         <Text style={styles.TextoCebezera}>Lista de los eventos</Text>
-
+  
         <View style={styles.eventosContainer}>
           {lista.map((list) => (
             <TouchableOpacity
