@@ -29,7 +29,7 @@ export default function CreateEvent(props) {
                 ...state
             })
 
-            Alert.alert('Alerta', 'Guardado con exito.')
+            Alert.alert('Alerta', 'Guardado con éxito.')
             props.navigation.navigate('List')
         }catch{
             console.error(error)

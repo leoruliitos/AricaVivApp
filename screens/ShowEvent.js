@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 
 //importar firebase
 import appFirebase from '../credenciales'
@@ -25,6 +25,12 @@ export default function ShowEvent(props) {
         getOneEvent(props.route.params.eventoId)
     },[])
 
+    const deleteEvent = async(id)=>{
+        await deleteDoc(doc(db, 'eventos', id))
+        Alert.alert('Alerta', 'Evento eliminado con éxito')
+        props.navigation.navigate('List')
+    }
+
   return (
     <View>
       <Text style={styles.titulo}>Informacion del Evento</Text>
@@ -34,7 +40,7 @@ export default function ShowEvent(props) {
       <Text style={styles.sub}>Dirección: {event.direccion}</Text>
       <Text style={styles.sub}>Información: {event.descripcion}</Text>
 
-      <TouchableOpacity style={styles.BotonLista}>
+      <TouchableOpacity style={styles.BotonLista} onPress={()=>deleteEvent(props.route.params.eventoId)}>
         <Text style={styles.TextoNombre}>Eliminar</Text>
       </TouchableOpacity>
 

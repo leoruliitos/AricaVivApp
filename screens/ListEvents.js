@@ -31,7 +31,7 @@ export default function ListEvents(props) {
             }
         }
         getLista()
-    },[])
+    },[lista])
     return(
     <ScrollView>
         <TouchableOpacity style={styles.Boton} onPress={()=>props.navigation.navigate('Create')}>
