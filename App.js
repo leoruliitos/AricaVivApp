@@ -18,9 +18,9 @@ export default function App() {
   function MyStack(){
     return(
       <Stack.Navigator>
-      <Stack.Screen name="List" component={ListEvents}/>
-      <Stack.Screen name="Create" component={CreateEvent}/>
-      <Stack.Screen name="Show" component={ShowEvent}/>
+        <Stack.Screen name="List" component={ListEvents}/>
+        <Stack.Screen name="Create" component={CreateEvent}/>
+        <Stack.Screen name="Show" component={ShowEvent}/>
     </Stack.Navigator>
     )
   }

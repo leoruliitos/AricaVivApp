@@ -1,95 +1,114 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 
-//importar firebase
-import appFirebase from '../credenciales'
-import {getFirestore, collection, addDoc, getDocs, doc, deleteDoc, getDoc, setDoct} from 'firebase/firestore'
-import { useEffect, useState } from 'react';
+// Importar firebase
+import appFirebase from '../credenciales';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
-const db = getFirestore(appFirebase)
+const db = getFirestore(appFirebase);
 
 export default function ListEvents(props) {
-    const [lista, setLista] = useState([])
-    useEffect(()=>{
-        const getLista = async()=>{
-            try {
-                const querySnapshot = await getDocs(collection(db, 'eventos'))
-                const docs = []
-                querySnapshot.forEach((doc)=>{
-                    const {titulo, fecha, direccion, descripcion} = doc.data()
-                    docs.push({
-                        id:doc.id,
-                        titulo,
-                        fecha,
-                        direccion,
-                        descripcion
-                    })
-                })
-                setLista(docs);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        getLista()
-    },[lista])
-    return(
-    <ScrollView>
-        <TouchableOpacity style={styles.Boton} onPress={()=>props.navigation.navigate('Create')}>
-            <Text style={styles.TextoBoton}>Agregar Evento</Text>
+  const [lista, setLista] = useState([]);
+
+  useEffect(() => {
+    const getLista = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'eventos'));
+        const docs = [];
+        querySnapshot.forEach((doc) => {
+          const { titulo, fecha, direccion, descripcion } = doc.data();
+          docs.push({
+            id: doc.id,
+            titulo,
+            fecha,
+            direccion,
+            descripcion,
+          });
+        });
+        setLista(docs);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLista();
+  }, [lista]);
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={styles.container}>
+        <Text style={styles.TextoCebezera}>Lista de los eventos</Text>
+
+        <View style={styles.eventosContainer}>
+          {lista.map((list) => (
+            <TouchableOpacity
+              key={list.id}
+              style={styles.BotonLista}
+              onPress={() => props.navigation.navigate('Show', { eventoId: list.id })}
+            >
+              <Text style={styles.TextoTitulo}>{list.titulo}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <Image
+          style={styles.ImagenMain}
+          source={{
+            uri:
+              'https://chileestuyo.cl/wp-content/uploads/2021/08/morro-de-arica.jpg',
+          }}
+        />
+
+        <TouchableOpacity style={styles.Boton} onPress={() => props.navigation.navigate('Create')}>
+          <Text style={styles.TextoBoton}>Agregar Evento</Text>
         </TouchableOpacity>
-
-        <View>
-            <Text style={styles.TextoCebezera}>Lista de los eventos</Text>
-        </View>
-
-        <View>
-            {
-                lista.map((list)=>(
-                    <TouchableOpacity key={list.id} style={styles.BotonLista}
-                    onPress={()=>props.navigation.navigate('Show', {eventoId:list.id})}>
-                        <Text style={styles.TextoTitulo}>{list.titulo}</Text>
-                    </TouchableOpacity>
-                ))
-            } 
-        </View>
-
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 15,
   },
-  Boton:{
+  eventosContainer: {
+    flex: 1,
+  },
+  Boton: {
     backgroundColor: 'cyan',
-    height:35,
-    borderColor:'black',
-    borderWidth:1
+    height: 35,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 15,
   },
-  TextoBoton:{
-    fontSize:18,
-    textAlign:'center'
+  TextoBoton: {
+    fontSize: 18,
   },
-  TextoCebezera:{
-    textAlign:'center',
-    marginTop:20,
-    marginBottom:10,
-    fontSize:20
+  TextoCebezera: {
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 10,
+    fontSize: 20,
   },
-  TextoTitulo:{
-    fontSize:16
+  TextoTitulo: {
+    fontSize: 16,
   },
-  BotonLista:{
+  BotonLista: {
     backgroundColor: '#DDDDDD',
-    borderBottomWidth:1,
-    borderBottomColor:'#cccccc',
-    marginBottom:3,
-    padding:5
-  }
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
+    marginBottom: 3,
+    padding: 10,
+    borderRadius: 8,
+  },
+  ImagenMain: {
+    width: '100%',
+    height: 220,
+    borderRadius: 10,
+    marginVertical: 20,
+  },
 });
-
-
